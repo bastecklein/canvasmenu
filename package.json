@@ -1,6 +1,6 @@
 {
     "name": "canvasmenu",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Library for displaying a menu on an HTML canvas element.",
     "keywords": ["javascript", "canvas", "menu", "library", "ape apps", "module"],
     "homepage": "https://www.ape-apps.com",
@@ -26,7 +26,13 @@
     "dependencies": {
         "common-helpers": "git+ssh://git@github.com:bastecklein/common-helpers.git#main"
     },
-    "devDependencies": {},
+    "devDependencies": {
+        "@eslint/css": "*",
+        "@eslint/js": "*",
+        "@eslint/json": "*",
+        "eslint": "*",
+        "globals": "*"
+    },
     "private": false,
     "type": "module"
 }

@@ -1,4 +1,4 @@
-import { hexToRGB } from "common-helpers";
+import { hexToRGB, distBetweenPoints } from "common-helpers";
 
 let cmoCan = null;
 let cmoCon = null;
@@ -173,7 +173,70 @@ export class CanvasMenu {
         renderCanvasMenu(this);
     }
 
-    onPadDown() {}
+    onPadDown(button) {
+        if(!button) {
+            return;
+        }
+
+        if(this.style == "absolute") {
+            onAbsoluteGamepad(this, button);
+            return;
+        }
+
+        if(this.style == "list") {
+            onListGamepad(this, button);
+            return;
+        }
+        
+
+        if(button == "up" || button == "lup") {
+
+            this.hoverX = -1;
+            this.hoverY = -1;
+
+            this.padIndex--;
+
+            if(this.padIndex < 0) {
+                this.padIndex = this.options.length - 1;
+            }
+
+            if(this.onPadSelectionCallback) {
+                this.onPadSelectionCallback(button);
+            }
+
+            renderCanvasMenu(this);
+        }
+
+        if(button == "down" || button == "ldown") {
+            this.hoverX = -1;
+            this.hoverY = -1;
+
+            this.padIndex++;
+
+            if(this.padIndex >= this.options.length) {
+                this.padIndex = 0;
+            }
+
+            if(this.onPadSelectionCallback) {
+                this.onPadSelectionCallback(button);
+            }
+
+            renderCanvasMenu(this);
+        }
+
+        if(button == "a" || button == "rt") {
+            if(this.options[this.padIndex]) {
+                const option = this.options[this.padIndex];
+                this.onSelection(option.tag);
+            }
+        }
+
+        if(button == "b") {
+            if(this.onPadSelectionCallback) {
+                this.onPadSelectionCallback(button);
+            }
+        }
+    }
 }
 
 function renderCanvasMenu(menu) {
@@ -1357,4 +1420,180 @@ function renderImageMenuItem(option, menu) {
 
         cmoIcons[option.src].icon = im;
     }
+}
+
+function onAbsoluteGamepad(menu, button) {
+    if(!button || !menu.options || menu.options.length == 0) {
+        return;
+    }
+
+    if(!menu.padIndex) {
+        let got = null;
+
+        for(let i = 0; i < menu.options.length; i++) {
+            const compare = menu.options[i];
+
+            if(compare.tag) {
+                got = compare;
+                break;
+            }
+        }
+
+        if(got) {
+            menu.padIndex = got;
+        }
+    }
+
+    if(menu.padIndex == -1) {
+        menu.padIndex = null;
+    }
+
+    const checkItem = menu.padIndex;
+
+    if(button == "a" || button == "rt") {
+        if(checkItem) {
+            menu.onSelection(checkItem.tag);
+        } else {
+            if(menu.onPadSelectionCallback) {
+                menu.onPadSelectionCallback(button);
+            }
+        }
+            
+        return;
+    }
+
+    if(button == "b") {
+        if(menu.onPadSelectionCallback) {
+            menu.onPadSelectionCallback(button);
+        }
+
+        return;
+    }
+
+    if(button == "x" || button == "y" || button == "start" || button == "select" || button == "lt" || button == "lb" || button == "rb") {
+        if(menu.onPadSelectionCallback) {
+            menu.onPadSelectionCallback(button);
+        }
+    }
+
+    if(!checkItem || !checkItem.renderPos) {
+        return;
+    }
+
+    if(button == "right" || button == "lright" || button == "left" || button == "lleft" || button == "down" || button == "ldown" || button == "up" || button == "lup") {
+
+        menu.hoverX = -1;
+        menu.hoverY = -1;
+
+        let possibles = [];
+
+        for(let i = 0; i < menu.options.length; i++) {
+            const compare = menu.options[i];
+
+            if(!compare.tag || compare == checkItem || !compare.renderPos) {
+                continue;
+            }
+
+            if(button == "up" || button == "lup") {
+                if(compare.renderPos.by > checkItem.renderPos.y) {
+                    continue;
+                }
+            }
+
+            if(button == "down" || button == "ldown") {
+                if(compare.renderPos.y < checkItem.renderPos.by) {
+                    continue;
+                }
+            }
+
+            if(button == "right" || button == "lright") {
+                if(compare.renderPos.x < checkItem.renderPos.rx) {
+                    continue;
+                }
+            }
+
+            if(button == "left" || button == "lleft") {
+                if(compare.renderPos.rx > checkItem.renderPos.x) {
+                    continue;
+                }
+            }
+
+            possibles.push(compare);
+        }
+
+        let closest = null;
+        let closestDist = 9999999;
+
+        if(possibles.length > 0) {
+            for(let i = 0; i < possibles.length; i++) {
+                const check = possibles[i];
+                let dist = distBetweenPoints(check.renderPos.x, check.renderPos.y, checkItem.renderPos.x, checkItem.renderPos.y);
+
+                if(button == "right" || button == "lright" || button == "left" || button == "lleft") {
+                    if(check.renderPos.y > checkItem.renderPos.by || check.renderPos.by < checkItem.renderPos.y) {
+                        dist *= 6;
+                    }
+                }
+
+                if(button == "down" || button == "ldown" || button == "up" || button == "lup") {
+                    if(check.renderPos.x > checkItem.renderPos.rx || check.renderPos.rx < checkItem.renderPos.x) {
+                        dist *= 6;
+                    }
+                }
+
+                if(dist < closestDist) {
+                    closest = check;
+                    closestDist = dist;
+                }
+
+            }
+        }
+
+        if(closest) {
+            menu.padIndex = closest;
+        }
+
+        renderCanvasMenu(menu);
+    }
+
+        
+}
+
+function onListGamepad(menu, button) {
+    menu.hoverX = -1;
+    menu.hoverY = -1;
+
+    if(button == "up" || button == "lup" || button == "left" || button == "lleft") {
+        menu.listIndex--;
+                    
+        if(menu.listIndex < 0) {
+            menu.listIndex = menu.options.length - 1;
+        }
+    }
+
+    if(button == "down" || button == "ldown" || button == "right" || button == "lright") {
+        menu.listIndex++;
+                    
+        if(menu.listIndex >= menu.options.length) {
+            menu.listIndex = 0;
+        }
+    }
+
+    if(button == "a" || button == "rt") {
+        const idk = menu.options[menu.listIndex];
+
+        if(idk) {
+            menu.onSelection(idk.tag);
+        }
+    }
+
+    if(button == "b") {
+        menu.onSelection(null);
+    }
+
+    if(menu.updateCallback) {
+        menu.updateCallback();
+    }
+
+    renderCanvasMenu(menu);
 }
