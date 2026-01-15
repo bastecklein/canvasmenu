@@ -325,13 +325,14 @@ function renderStandardCanvasMenu(menu, context) {
         const lineHeight = 6 * menu.scale;
 
         const lines = menu.footer.split("\n");
+        let lineY = h - (lineHeight * lines.length);
 
         for(let i = 0; i < lines.length - 1; i++) {
-            const lineY = h - ((lines.length - i) * lineHeight) - lineHeight;
-
             context.fillText(lines[i], dx, lineY);
             context.strokeText(lines[i], dx, lineY);
             context.fillText(lines[i], dx, lineY);
+
+            lineY += lineHeight;
         }
 
         /*
