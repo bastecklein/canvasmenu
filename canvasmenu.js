@@ -325,7 +325,7 @@ function renderStandardCanvasMenu(menu, context) {
         const lineHeight = 16 * menu.scale;
 
         const lines = menu.footer.split("\n");
-        let lineY = h - ((lineHeight * lines.length) + (6 * menu.scale));
+        let lineY = h - (lineHeight * lines.length);
 
         for(let i = 0; i < lines.length; i++) {
             context.fillText(lines[i], dx, lineY);
