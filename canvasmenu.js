@@ -322,9 +322,22 @@ function renderStandardCanvasMenu(menu, context) {
 
         const dx = Math.round(w / 2);
 
+        const lineHeight = 6 * menu.scale;
+
+        const lines = menu.footer.split("\n");
+
+        for(let i = 0; i < lines.length - 1; i++) {
+            const lineY = h - ((lines.length - i) * lineHeight) - lineHeight;
+
+            context.fillText(lines[i], dx, lineY);
+            context.strokeText(lines[i], dx, lineY);
+            context.fillText(lines[i], dx, lineY);
+        }
+
+        /*
         context.fillText(menu.footer, dx, h - (6 * menu.scale));
         context.strokeText(menu.footer, dx, h - (6 * menu.scale));
-        context.fillText(menu.footer, dx, h - (6 * menu.scale));
+        context.fillText(menu.footer, dx, h - (6 * menu.scale));*/
     }
 
     if(menu.subFooter) {
