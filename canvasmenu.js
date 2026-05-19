@@ -537,9 +537,9 @@ function renderListCanvasMenu(menu, context) {
 
             let ratingText = "";
 
-            const fullStar = adl.iconNameToHex("ic_fluent_star_20_filled").replace("&#x00", "0x").replace(";","");;
-            const halfStar = adl.iconNameToHex("ic_fluent_star_half_20_regular").replace("&#x00", "0x").replace(";","");;
-            const emptyStar = adl.iconNameToHex("ic_fluent_star_20_regular").replace("&#x00", "0x").replace(";","");;
+            const fullStar = String.fromCharCode(adl.iconNameToHex("ic_fluent_star_20_filled").replace("&#x00", "0x").replace(";",""));
+            const halfStar = String.fromCharCode(adl.iconNameToHex("ic_fluent_star_half_20_regular").replace("&#x00", "0x").replace(";",""));
+            const emptyStar = String.fromCharCode(adl.iconNameToHex("ic_fluent_star_20_regular").replace("&#x00", "0x").replace(";",""));
 
             for(let r = 1; r <= 5; r++) {
                 if(curItem.rating >= r) {
@@ -1110,26 +1110,15 @@ function renderAbsoluteMenuItem(option, menu) {
 
     if(option.icon) {
 
-        console.log("option icon: " + option.icon);
-
         if(option.icon.indexOf("ic_") == 0) {
             if(firstFluent) {
                 firstFluent = false;
                 fluentRedraw = true;
             }
 
-            console.log("render fluent icon: " + option.icon);
             const hex = adl.iconNameToHex(option.icon);
-
-            console.log("icon hex: " + hex);
-
             const useCode = hex.replace("&#x00", "0x").replace(";","");
-
-            console.log("use code: " + useCode);
-
             const useIcon = String.fromCharCode(useCode);
-
-            console.log("use icon: " + useIcon);
 
             cmoCon.font = "bold " + ((fontSize + 2) * menu.scale) + "px fluent";
 
