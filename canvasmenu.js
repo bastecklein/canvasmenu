@@ -537,14 +537,18 @@ function renderListCanvasMenu(menu, context) {
 
             let ratingText = "";
 
+            const fullStar = adl.iconNameToHex("ic_fluent_star_20_filled").replace("&#x00", "0x").replace(";","");;
+            const halfStar = adl.iconNameToHex("ic_fluent_star_half_20_regular").replace("&#x00", "0x").replace(";","");;
+            const emptyStar = adl.iconNameToHex("ic_fluent_star_20_regular").replace("&#x00", "0x").replace(";","");;
+
             for(let r = 1; r <= 5; r++) {
                 if(curItem.rating >= r) {
-                    ratingText += String.fromCharCode("0xE00A");
+                    ratingText += fullStar;
                 } else {
                     if(curItem.rating >= r - 0.5) {
-                        ratingText += String.fromCharCode("0xF0E7");
+                        ratingText += halfStar;
                     } else {
-                        ratingText += String.fromCharCode("0xE1CE");
+                        ratingText += emptyStar;
                     }
                 }
 
@@ -597,7 +601,7 @@ function renderListCanvasMenu(menu, context) {
         }
 
         renderAbsoluteMenuItem({
-            icon: "fluent.&#xEDD5;",
+            icon: "ic_fluent_chevron_left_20_regular",
             iconColor: leftColor,
             top: leftRightButtonY,
             left: 12,
@@ -615,7 +619,7 @@ function renderListCanvasMenu(menu, context) {
         }, menu);
 
         renderAbsoluteMenuItem({
-            icon: "fluent.&#xEDD6;",
+            icon: "ic_fluent_chevron_right_20_regular",
             iconColor: rightColor,
             top: leftRightButtonY,
             right: 12,
