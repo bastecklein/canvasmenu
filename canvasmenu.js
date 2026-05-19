@@ -1119,7 +1119,7 @@ function renderAbsoluteMenuItem(option, menu) {
 
             console.log("icon hex: " + hex);
 
-            const useCode = "0x" + hex;
+            const useCode = hex.replace("&#x00", "0x").replace(";","");
 
             console.log("use code: " + useCode);
 
