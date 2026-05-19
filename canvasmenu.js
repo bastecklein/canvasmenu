@@ -1,4 +1,5 @@
 import { hexToRGB, distBetweenPoints } from "common-helpers";
+import adl from "adl";
 
 let cmoCan = null;
 let cmoCon = null;
@@ -1104,13 +1105,13 @@ function renderAbsoluteMenuItem(option, menu) {
     }
 
     if(option.icon) {
-        if(option.icon.indexOf("fluent.") == 0) {
+        if(option.icon.indexOf("ic_") == 0) {
             if(firstFluent) {
                 firstFluent = false;
                 fluentRedraw = true;
             }
 
-            const useIcon = String.fromCharCode("0x" + option.icon.replace("fluent.&#x","").replace(";",""));
+            const useIcon = String.fromCharCode(adl.iconNameToHex(option.icon));
             cmoCon.font = "bold " + ((fontSize + 2) * menu.scale) + "px fluent";
 
             if(option.iconColor) {

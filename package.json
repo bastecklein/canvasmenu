@@ -24,7 +24,8 @@
     "main": "canvasmenu.js",
     "config": {},
     "dependencies": {
-        "common-helpers": "git+ssh://git@github.com:bastecklein/common-helpers.git#main"
+        "adl": "https://github.com/bastecklein/adl",
+        "common-helpers": "https://github.com/bastecklein/common-helpers"
     },
     "devDependencies": {
         "@eslint/css": "*",
