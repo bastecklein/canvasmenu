@@ -1115,8 +1115,15 @@ function renderAbsoluteMenuItem(option, menu) {
             }
 
             console.log("render fluent icon: " + option.icon);
+            const hex = adl.iconNameToHex(option.icon);
 
-            const useIcon = String.fromCharCode(adl.iconNameToHex(option.icon));
+            console.log("icon hex: " + hex);
+
+            const useCode = "0x" + hex;
+
+            console.log("use code: " + useCode);
+
+            const useIcon = String.fromCharCode(useCode);
 
             console.log("use icon: " + useIcon);
 
