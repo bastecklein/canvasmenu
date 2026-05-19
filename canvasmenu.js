@@ -1105,13 +1105,21 @@ function renderAbsoluteMenuItem(option, menu) {
     }
 
     if(option.icon) {
+
+        console.log("option icon: " + option.icon);
+
         if(option.icon.indexOf("ic_") == 0) {
             if(firstFluent) {
                 firstFluent = false;
                 fluentRedraw = true;
             }
 
+            console.log("render fluent icon: " + option.icon);
+
             const useIcon = String.fromCharCode(adl.iconNameToHex(option.icon));
+
+            console.log("use icon: " + useIcon);
+
             cmoCon.font = "bold " + ((fontSize + 2) * menu.scale) + "px fluent";
 
             if(option.iconColor) {
