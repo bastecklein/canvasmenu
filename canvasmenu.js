@@ -636,31 +636,33 @@ function renderListCanvasMenu(menu, context) {
             }
         }, menu);
 
-        renderAbsoluteMenuItem({
-            text: menu.cancelText,
-            icon: "fluent.&#xEA39;",
-            iconColor: "#F44336",
-            bottom: 12,
-            left: 12,
-            tag: null,
-            overrideCallback: function() {
-                menu.onSelection(null);
-            }
-        }, menu);
-
-        renderAbsoluteMenuItem({
-            text: menu.confirmText,
-            icon: "fluent.&#xE930;",
-            iconColor: "#4CAF50",
-            bottom: 12,
-            right: 12,
-            tag: "confirm",
-            overrideCallback: function() {
-                menu.onSelection(curItem.tag);
-            }
-        }, menu);
-
     }
+
+    renderAbsoluteMenuItem({
+        text: menu.cancelText,
+        icon: "fluent.&#xEA39;",
+        iconColor: "#F44336",
+        bottom: 12,
+        left: 12,
+        tag: null,
+        overrideCallback: function() {
+            menu.onSelection(null);
+        }
+    }, menu);
+
+    renderAbsoluteMenuItem({
+        text: menu.confirmText,
+        icon: "fluent.&#xE930;",
+        iconColor: "#4CAF50",
+        bottom: 12,
+        right: 12,
+        tag: "confirm",
+        overrideCallback: function() {
+            menu.onSelection(curItem.tag);
+        }
+    }, menu);
+
+    
 }
 
 function renderStandardMenuTitle(menu, context, padding, w) {
